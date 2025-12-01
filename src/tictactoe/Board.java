@@ -34,4 +34,13 @@ public class Board {
             System.out.println("  -------------");
         }
     }
+    
+    // Returns false if row and column is not == ' '
+    public boolean isCellEmpty(int col, int row) { 
+        return cells[row][col] == ' '; }
+
+    // Places marker in the correct cell
+    public void placeMarker(int col, int row, char marker) {
+            cells[row][col] = marker;
+    }
 }
