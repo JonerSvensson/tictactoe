@@ -6,6 +6,7 @@ public class Game {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
+    private Board board;
 
     Scanner scanner = new Scanner(System.in);
 
@@ -39,6 +40,11 @@ public class Game {
 
     // Game process
     public void start(){
+        board = new Board();
+
+        // Debug
+        this.board.printBoard();
         System.out.println("is this a bot? " + this.player2.getBot());
+        
     }
 }
