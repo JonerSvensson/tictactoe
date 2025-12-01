@@ -61,4 +61,41 @@ public class Board {
     public void placeMarker(int col, int row, char marker) {
             cells[row][col] = marker;
     }
+
+    // Loops through all cells and return false if a cell == ' '
+    public boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (cells[i][j] == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+        // Checks every possible victory alignment and returns false if none is fulfilled
+        public boolean checkWin(char marker) {
+        // Rows --
+        for (int i = 0; i < 3; i++) {
+            if (cells[i][0] == marker && cells[i][1] == marker && cells[i][2] == marker) {
+                return true;
+            }
+        }
+        // Columns |
+        for (int j = 0; j < 3; j++) {
+            if (cells[0][j] == marker && cells[1][j] == marker && cells[2][j] == marker) {
+                return true;
+            }
+        }
+        // Diagonals \
+        if (cells[0][0] == marker && cells[1][1] == marker && cells[2][2] == marker) {
+            return true;
+        }
+        // Diagonals /
+        if (cells[0][2] == marker && cells[1][1] == marker && cells[2][0] == marker) {
+            return true;
+        }
+        return false;
+    }
 }

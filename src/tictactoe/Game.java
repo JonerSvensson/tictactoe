@@ -70,42 +70,59 @@ public class Game {
 
             } else{
 
-            this.board.printBoard();
-            
-            int col, row;
-            
-            System.out.println(currentPlayer.getName() + "'s turn (" + currentPlayer.getMarker() + ")");
-            System.out.print("Enter column and row (e.g. 1B): ");
+                this.board.printBoard();
+                
+                int col, row;
+                
+                System.out.println(currentPlayer.getName() + "'s turn (" + currentPlayer.getMarker() + ")");
+                System.out.print("Enter column and row (e.g. 1B): ");
 
-            
-            try{
-                String input = scanner.next().toUpperCase();
+                
+                try{
+                    String input = scanner.next().toUpperCase();
 
-                // Convert String input to ascii to get value between 0-2 (subtract ascii value)
-                col = ((int) (input.charAt(0)) - 49);
-                row = ((int) (input.charAt(1)) - 65);
+                    // Convert String input to ascii to get value between 0-2 (subtract ascii value)
+                    col = ((int) (input.charAt(0)) - 49);
+                    row = ((int) (input.charAt(1)) - 65);
 
-                // Initiates catch if col/row is not 0-2 after conversion
-                if (col < 0 || col > 2 || row < 0 || row > 2) {
-                    throw new IllegalArgumentException();
+                    // Initiates catch if col/row is not 0-2 after conversion
+                    if (col < 0 || col > 2 || row < 0 || row > 2) {
+                        throw new IllegalArgumentException();
+                    }
+                    scanner.nextLine();
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter a number between 1-3 for column and letter A, B or C for row.");
+                    scanner.nextLine();
+                    continue;
                 }
-                scanner.nextLine();
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter a number between 1-3 for column and letter A, B or C for row.");
-                scanner.nextLine();
-                continue;
-            }
 
-            if (board.isCellEmpty(col, row)) {
                 board.placeMarker(col, row, currentPlayer.getMarker());
+
+                
+
             }
-
-            // Debug
-            System.out.println("is this a bot? " + this.player2.getBot());
-            System.out.println("row: " + row +" "+ "col: " + col);
-
+            if (board.checkWin(currentPlayer.getMarker())) {
+                currentPlayer.addPoint();
+                board.printBoard();
+                System.out.println(currentPlayer.getName() + " wins!");
+                break;
+            } else if (board.isBoardFull()) {
+                board.printBoard();
+                System.out.println("Draw!");
+                break;
             }
             switchPlayer();
+        }
+        System.out.print("Score: " + player1.getName() + " " + player1.getScore() + " : " + player2.getScore() + " " + player2.getName());
+        scanner.nextLine();
+        System.out.print("Play again? (yes/no): ");
+        String playAgain = scanner.nextLine();
+
+        if (playAgain.equalsIgnoreCase("yes")) {
+            board.reset();
+            start();
+        } else {
+            System.out.println("Thx for playing!");
         }
     }
     private void switchPlayer() {
