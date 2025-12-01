@@ -1,8 +1,10 @@
 package tictactoe;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
+    // Global storage
     private Player player1;
     private Player player2;
     private Player currentPlayer;
@@ -13,20 +15,26 @@ public class Game {
     // Game and settings
     public Game(){
 
+        // Ask player 1 for name
         System.out.print("Enter Player 1's name: ");
         String player1Name = scanner.nextLine();
         char player1Marker = 'X';
 
+        // Assign player1 with class
         this.player1 = new Player(player1Name, player1Marker, false);
 
+        // Ask to play vs AI
         System.out.print("Play vs bot or real player? (bot/player): ");
-        String playAgain = scanner.nextLine();
+        String isBot = scanner.nextLine();
 
         char player2Marker = 'O';
 
-        if (playAgain.equalsIgnoreCase("bot")) {
+        // Sets player2 to bot if isBot == bot
+        if (isBot.equalsIgnoreCase("bot")) {
 
             this.player2 = new Player("bot", player2Marker, true);
+
+        // Asks player to for name if isBot != bot
         } else {
                 System.out.print("Enter Player 2's name: ");
                 String player2Name = scanner.nextLine();
@@ -34,24 +42,43 @@ public class Game {
                 this.player2 = new Player(player2Name, player2Marker, false);
         }
 
+        // Always makes player1 to go first
         this.currentPlayer = this.player1;
+        // Star game Process
         start();
     }
 
     // Game process
     public void start(){
+        //Creates game board
         board = new Board();
 
+        // Runs over and over because always true
         while (true) {
+            // Checks if currentPlayer is a bot
+            if (currentPlayer.getBot()) {
+                // Get all empty cells
+                List<Cell> emptyCells = board.getEmptyCells();
+
+                if (!emptyCells.isEmpty()) {
+                    // Pick a random cell from the list
+                    Cell move = emptyCells.get((int)(Math.random() * emptyCells.size()));
+
+                    // Place the bot marker in the random cell
+                    board.placeMarker(move.col, move.row, currentPlayer.getMarker());
+                }
+
+            } else{
+
             this.board.printBoard();
+            
+            int col, row;
             
             System.out.println(currentPlayer.getName() + "'s turn (" + currentPlayer.getMarker() + ")");
             System.out.print("Enter column and row (e.g. 1B): ");
 
-            int col, row;
-
+            
             try{
-
                 String input = scanner.next().toUpperCase();
 
                 // Convert String input to ascii to get value between 0-2 (subtract ascii value)
@@ -77,6 +104,7 @@ public class Game {
             System.out.println("is this a bot? " + this.player2.getBot());
             System.out.println("row: " + row +" "+ "col: " + col);
 
+            }
             switchPlayer();
         }
     }
