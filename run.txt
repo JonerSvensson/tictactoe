@@ -1,0 +1,3 @@
+rm -rf out/*
+javac -d out src/tictactoe/*.java
+java -cp out tictactoe.Main
