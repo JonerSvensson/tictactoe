@@ -79,7 +79,7 @@ public class Game {
 
                 
                 try{
-                    String input = scanner.next().toUpperCase();
+                    String input = scanner.nextLine().toUpperCase();
 
                     // Convert String input to ascii to get value between 0-2 (subtract ascii value)
                     col = ((int) (input.charAt(0)) - 49);
@@ -89,18 +89,20 @@ public class Game {
                     if (col < 0 || col > 2 || row < 0 || row > 2) {
                         throw new IllegalArgumentException();
                     }
-                    scanner.nextLine();
                 } catch (Exception e) {
                     System.out.println("Invalid input. Please enter a number between 1-3 for column and letter A, B or C for row.");
-                    scanner.nextLine();
                     continue;
                 }
 
-                board.placeMarker(col, row, currentPlayer.getMarker());
-
-                
-
+                if (board.isCellEmpty(col, row)) {
+                    board.placeMarker(col, row, currentPlayer.getMarker());
+                } else {
+                    System.out.println("Cell is already taken");
+                    continue;
+                }
             }
+
+            // Check for win or draw
             if (board.checkWin(currentPlayer.getMarker())) {
                 currentPlayer.addPoint();
                 board.printBoard();
@@ -113,18 +115,23 @@ public class Game {
             }
             switchPlayer();
         }
+
+        // End of game.
         System.out.print("Score: " + player1.getName() + " " + player1.getScore() + " : " + player2.getScore() + " " + player2.getName());
-        scanner.nextLine();
-        System.out.print("Play again? (yes/no): ");
+        System.out.print("\nPlay again? (yes/no): ");
         String playAgain = scanner.nextLine();
+
 
         if (playAgain.equalsIgnoreCase("yes")) {
             board.reset();
             start();
         } else {
             System.out.println("Thx for playing!");
+            System.exit(0);
         }
     }
+
+    // Switches currentPlayer based on true or false statement
     private void switchPlayer() {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }
